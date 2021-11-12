@@ -67,7 +67,7 @@ def RoseBot():
             df_Main.loc[0, "Budget"] = budget
             df_Main.loc[0, "Saldo"] = saldo
             print(df_Main)
-            if float(df_Main.loc[0, "RSI"]) > 75 and saldo > 0 and str(df_Main.loc[0, "ID_Order"]) == "nan":
+            if float(df_Main.loc[0, "RSI"]) > 75 and float(saldo) > 0 and str(df_Main.loc[0, "ID_Order"]) == "nan":
                 # SELL
                 exc = Tradding(symbol=symbol, sell_price=str(df_Main.loc[0, "Actual_price"]), buy_price=None, qty=str(df_Main.loc[0, "Saldo"]), status_order=None, id_order=None)
                 r = exc.SellOrder()
