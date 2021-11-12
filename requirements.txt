@@ -1,0 +1,10 @@
+emojis==0.6.0
+numpy==1.19.4
+pandas==1.1.4
+prettytable==2.2.1
+python-binance==0.7.5
+python-telegram-bot==13.0
+requests==2.25.0
+TA-Lib==0.4.19
+tabulate==0.8.9
+telegram==0.0.1
