@@ -10,7 +10,7 @@ The bot is based on Python 3.
 3. Create API Keys on Binance.com (remember to set up trading without withdrawals. It's worth setting only your IP)
 4. Create a bot on Telegram. https://sendpulse.com/knowledge-base/chatbot/create-telegram-chatbot
 5. Add the keys to the ```key.py``` file and save.
-6. Enter the data for trading in the ```RoseBot_02.py``` file:
+6. Enter the data for trading in the ```RoseBot_RSI.py``` file:
    - Line 32 -> Cryptocurrency symbol np "SHIBUSDT".
    - Line 43 -> What operation should BOT SELL or BUY trade start with? np. "BUY"
    - Line 44 -> Budget expressed in USDT, e.g. 50
