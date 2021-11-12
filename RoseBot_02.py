@@ -40,11 +40,11 @@ bot = telegram.Bot(token=key.token)
 
 def RoseBot():
     # Trading
-    operation = "BUY"      # Start operation
-    budget = 523             # USDT
-    saldo = 0         # Coins
+    operation = "BUY"         # Start operation
+    budget = 523              # USDT
+    saldo = 0                 # Coins
 
-    df_Main.loc[0, "ID_Order"] = "nan" #"nan"
+    df_Main.loc[0, "ID_Order"] = "nan"
     df_Main.loc[0, "Status_Order"] = "nan"
 
     hello_msg = emojis.encode(":beginner:") + " <b>ROSEBOT_1.02</b>" + emojis.encode(":beginner:") + "\t" + emojis.encode(":watch:") + "\t" + "<i>" + str(datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "</i>")
@@ -150,19 +150,6 @@ def Candles(symbol, interval):
         print(e)
         time.sleep(5)
         client = Client(key.api_key, key.api_secret)
-
-    # except NameError as e:
-    #except NameError as e:
-        #print(e)
-        #print("Error connection...1/5")
-        #time.sleep(1)
-        #print("Error connection...2/5")                
-        #time.sleep(1)
-        #print("Error connection...3/5")
-        #time.sleep(1)
-        #print("Error connection...4/5")
-        #time.sleep(1)
-        #print("Error connection...5/5")  
             
 def GetBalances():
     dfAccount = pd.DataFrame()
@@ -246,8 +233,6 @@ class Tradding():
         return answer
     
     def CheckOrder(self):
-        # executedQty - coin
-        # cummulativeQuoteQty - usdt
         check = client.get_order(symbol=str(self.symbol), 
                                 orderId=str(self.id_order),
                                 recvWindow=60000)
@@ -286,14 +271,6 @@ class Tradding():
                 stepDot = str(saldo).find(".")
                 saldo = str(saldo)[0:stepDot+stepSize]
 
-                #buy_msg = "<b>Bought Order</b>" + "\n" \
-                #            + emojis.encode(":id:") + "\t" + str(self.id_order) + "\n" \
-                #            + emojis.encode(":gem:") + "\tSymbol:\t" + str(Jorder['symbol']) + "\n" \
-                #            + emojis.encode(":gem:") + "\tBuyPrice:\t" + str(Jorder['price']) + "\n" \
-                #            + emojis.encode(":moneybag:") + "\tCoin:\t" + str(Jorder['executedQty']) + "\n" \
-                #            + emojis.encode(":moneybag:") + "\tFee:\t" + str(round(float(Jorder['executedQty']) * 0.001,8)) + "\n" \
-                #            + emojis.encode(":moneybag:") + "\tCoinWithoutFee:\t" + str(math.floor(float(Jorder['executedQty']) - float(Jorder['executedQty']) * 0.001)) + "\n" \
-                #            + emojis.encode(":moneybag:") + "\tMoney:\t" + str(Jorder['cummulativeQuoteQty'])
                 buy_msg = "<b>Bought Order</b>" + "\n" \
                             + emojis.encode(":id:") + "\t" + str(self.id_order) + "\n" \
                             + emojis.encode(":gem:") + "\tSymbol:\t" + str(Jorder['symbol']) + "\n" \
@@ -306,8 +283,6 @@ class Tradding():
                 exe = Telegram_Function(key.chat_id)
                 exe.TelegramSendMsg(msg=buy_msg, parse_mode=telegram.ParseMode.HTML)
                 exe.TelegramSendBalanceTable()
-
-                #saldo = math.floor(float(Jorder['executedQty']) - float(Jorder['executedQty']) * 0.001)
                 answer = ["nan", "nan", saldo, 0, "SELL"]
         else:
             answer = [str(Jorder['orderId']), str(Jorder['status']), "nan", "nan", str(Jorder['side'])]
