@@ -40,9 +40,9 @@ bot = telegram.Bot(token=key.token)
 
 def RoseBot():
     # Trading
-    operation = "BUY"         # Start operation
-    budget = 523              # USDT
-    saldo = 0                 # Coins
+    operation = "BUY"           # Start operation
+    budget = 527                 # USDT
+    saldo =  0                   # Coins
 
     df_Main.loc[0, "ID_Order"] = "nan"
     df_Main.loc[0, "Status_Order"] = "nan"
@@ -55,9 +55,12 @@ def RoseBot():
     tel.TelegramSendMsg(msg=hello_msg, parse_mode=telegram.ParseMode.HTML)
     tel.TelegramSendTable(table=table, parse_mode=telegram.ParseMode.HTML)
     tel.TelegramSendBalanceTable()
+    url = "http://www.google.com"
+    timeout = 5
     
     while True:
         try:
+            request = requests.get(url, timeout=timeout)
             df = Candles(symbol=symbol, interval=interval)
             df_Main.loc[0, "Symbol"] = symbol
             df_Main.loc[0, "Actual_price"] = (json.loads(json.dumps(client.get_symbol_ticker(symbol=symbol))))['price']
@@ -95,7 +98,9 @@ def RoseBot():
                     budget = r[3]
                     operation = r[4]
         except NameError as e:
-            print(e) 
+            print(e)
+        except (requests.ConnectionError, requests.Timeout) as exception:
+	        print("No internet connection.")
 
 
 def Candles(symbol, interval):
@@ -150,6 +155,19 @@ def Candles(symbol, interval):
         print(e)
         time.sleep(5)
         client = Client(key.api_key, key.api_secret)
+
+    # except NameError as e:
+    #except NameError as e:
+        #print(e)
+        #print("Error connection...1/5")
+        #time.sleep(1)
+        #print("Error connection...2/5")                
+        #time.sleep(1)
+        #print("Error connection...3/5")
+        #time.sleep(1)
+        #print("Error connection...4/5")
+        #time.sleep(1)
+        #print("Error connection...5/5")  
             
 def GetBalances():
     dfAccount = pd.DataFrame()
@@ -190,7 +208,6 @@ def GetBalanceTable():
     dfAccount['Locked'] = dfAccount['Locked'].map('{:,.8f}'.format)
     dfAccount['BalanceUSDT'] = dfAccount['BalanceUSDT'].astype(np.float)
     TotalBalance = dfAccount['BalanceUSDT'].sum()
-    #TotalBalance = TotalBalance.map('{:,.2f}'.format)
     dfAccount['BalanceUSDT'] = dfAccount['BalanceUSDT'].map('{:,.2f}'.format)
     balancetable = tabulate(dfAccount, headers='keys', tablefmt='psql', stralign="right" , numalign="right")
     
@@ -283,6 +300,7 @@ class Tradding():
                 exe = Telegram_Function(key.chat_id)
                 exe.TelegramSendMsg(msg=buy_msg, parse_mode=telegram.ParseMode.HTML)
                 exe.TelegramSendBalanceTable()
+
                 answer = ["nan", "nan", saldo, 0, "SELL"]
         else:
             answer = [str(Jorder['orderId']), str(Jorder['status']), "nan", "nan", str(Jorder['side'])]
