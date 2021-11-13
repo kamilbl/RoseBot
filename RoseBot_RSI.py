@@ -97,6 +97,7 @@ def RoseBot():
                     saldo = r[2]
                     budget = r[3]
                     operation = r[4]
+            time.sleep(0.5)
         except NameError as e:
             print(e)
         except (requests.ConnectionError, requests.Timeout) as exception:
