@@ -6,7 +6,7 @@ This version is based on trading with the RSI indicator.
 
 The bot is based on Python 3.
 1. Install python3 https://www.python.org/downloads/
-2. Install the add-on package from the ```requirements.txt``` file
+2. Install the add-on package from the ```requirements.txt``` file ```pip3 install -r requirements.txt```
 3. Create API Keys on Binance.com (remember to set up trading without withdrawals. It's worth setting only your IP)
 4. Create a bot on Telegram. https://sendpulse.com/knowledge-base/chatbot/create-telegram-chatbot
 5. Add the keys to the ```key.py``` file and save.
