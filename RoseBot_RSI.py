@@ -41,7 +41,7 @@ bot = telegram.Bot(token=key.token)
 def RoseBot():
     # Trading
     operation = "BUY"           # Start operation
-    budget = 527                 # USDT
+    budget = 530                 # USDT
     saldo =  0                   # Coins
 
     df_Main.loc[0, "ID_Order"] = "nan"
@@ -104,70 +104,59 @@ def RoseBot():
 
 
 def Candles(symbol, interval):
-    client = Client(key.api_key, key.api_secret)
     try:
-        req = requests.get('https://www.google.com/').status_code
-        if req == 200:
-            candles = client.get_klines(symbol=symbol, interval=interval, limit=200)
-            opentime, lopen, lhigh, llow, lclose, lvol, closetime = [], [], [], [], [], [], []
-            for candle in candles:
-                candle[0] = datetime.datetime.fromtimestamp(candle[0] / 1000)
-                opentime.append(candle[0])
-                lopen.append(candle[1])
-                lhigh.append(candle[2])
-                llow.append(candle[3])
-                lclose.append(candle[4])
-                lvol.append(candle[5])
-                candle[6] = datetime.datetime.fromtimestamp(candle[6] / 1000)
-                closetime.append(candle[6])
-            df['Timestamp'] = opentime
-            df['Open'] = np.array(lopen).astype(np.float)
-            df['Open'] = df['Open'].map('{:.8f}'.format)
-            df['High'] = np.array(lhigh).astype(float)
-            df['High'] = df['High'].map('{:.8f}'.format)
-            df['Low'] = np.array(llow).astype(float)
-            df['Low'] = df['Low'].map('{:.8f}'.format)
-            df['Close'] = np.array(lclose).astype(float)
-            df['Volume'] = np.array(lvol).astype(float)
-            df['Close_time'] = closetime
-            df['Volume'] = df['Volume'].map('{:.0f}'.format)
-            df['Close1000'] = df['Close'] * 10000
-            df['BBupper'], df['BBmiddle'], df['BBlower'] = talib.BBANDS(df['Close1000'], timeperiod=20, nbdevup=2, nbdevdn=2, matype=0)
-            df['BBupper'] = df['BBupper'] / 10000
-            df['BBupper'] = df['BBupper'].map('{:.8f}'.format)
-            df['BBmiddle'] = df['BBmiddle'] / 10000
-            df['BBmiddle'] = df['BBmiddle'].map('{:.8f}'.format)
-            df['BBlower'] = df['BBlower'] / 10000
-            df['BBlower'] = df['BBlower'].map('{:.8f}'.format)
-            df['SMA14'] = talib.SMA(df['Close'], timeperiod=14)
-            df['SMA14'] = df['SMA14'].map('{:.8f}'.format)
-            df['RSI'] = talib.RSI(df['Close1000'], timeperiod=14)
-            df['RSI'] = df['RSI'].map('{:.1f}'.format)
-            df['SAR'] = talib.SAR(df['High'], df['Low'], 0.02, 0.2)
-            df['SAR'] = df['SAR'].map('{:.8f}'.format)
-            df['EMA100'] = talib.EMA(df['Close'], timeperiod=100)
-            df['FAST_EMA'] = talib.EMA(df['Close'], timeperiod=64)
-            df['SLOW_EMA'] = talib.EMA(df['Close'], timeperiod=128)
-            df['MACD'] = df['SLOW_EMA'] - df['FAST_EMA']
-            df['MACD'] = df['MACD'].map('{:.8f}'.format)
-            return(df)
+        url = "http://www.google.com"
+        timeout = 5
+        request = requests.get(url, timeout=timeout)
+        candles = client.get_klines(symbol=symbol, interval=interval, limit=200)
+        opentime, lopen, lhigh, llow, lclose, lvol, closetime = [], [], [], [], [], [], []
+        for candle in candles:
+            candle[0] = datetime.datetime.fromtimestamp(candle[0] / 1000)
+            opentime.append(candle[0])
+            lopen.append(candle[1])
+            lhigh.append(candle[2])
+            llow.append(candle[3])
+            lclose.append(candle[4])
+            lvol.append(candle[5])
+            candle[6] = datetime.datetime.fromtimestamp(candle[6] / 1000)
+            closetime.append(candle[6])
+        df['Timestamp'] = opentime
+        df['Open'] = np.array(lopen).astype(np.float)
+        df['Open'] = df['Open'].map('{:.8f}'.format)
+        df['High'] = np.array(lhigh).astype(float)
+        df['High'] = df['High'].map('{:.8f}'.format)
+        df['Low'] = np.array(llow).astype(float)
+        df['Low'] = df['Low'].map('{:.8f}'.format)
+        df['Close'] = np.array(lclose).astype(float)
+        df['Volume'] = np.array(lvol).astype(float)
+        df['Close_time'] = closetime
+        df['Volume'] = df['Volume'].map('{:.0f}'.format)
+        df['Close1000'] = df['Close'] * 10000
+        df['BBupper'], df['BBmiddle'], df['BBlower'] = talib.BBANDS(df['Close1000'], timeperiod=20, nbdevup=2, nbdevdn=2, matype=0)
+        df['BBupper'] = df['BBupper'] / 10000
+        df['BBupper'] = df['BBupper'].map('{:.8f}'.format)
+        df['BBmiddle'] = df['BBmiddle'] / 10000
+        df['BBmiddle'] = df['BBmiddle'].map('{:.8f}'.format)
+        df['BBlower'] = df['BBlower'] / 10000
+        df['BBlower'] = df['BBlower'].map('{:.8f}'.format)
+        df['SMA14'] = talib.SMA(df['Close'], timeperiod=14)
+        df['SMA14'] = df['SMA14'].map('{:.8f}'.format)
+        df['RSI'] = talib.RSI(df['Close1000'], timeperiod=14)
+        df['RSI'] = df['RSI'].map('{:.1f}'.format)
+        df['SAR'] = talib.SAR(df['High'], df['Low'], 0.02, 0.2)
+        df['SAR'] = df['SAR'].map('{:.8f}'.format)
+        df['EMA100'] = talib.EMA(df['Close'], timeperiod=100)
+        df['FAST_EMA'] = talib.EMA(df['Close'], timeperiod=64)
+        df['SLOW_EMA'] = talib.EMA(df['Close'], timeperiod=128)
+        df['MACD'] = df['SLOW_EMA'] - df['FAST_EMA']
+        df['MACD'] = df['MACD'].map('{:.8f}'.format)
+        time.sleep(0.5)
+        return(df)
     except BinanceAPIException as e:
         print(e)
-        time.sleep(5)
-        client = Client(key.api_key, key.api_secret)
-
-    # except NameError as e:
-    #except NameError as e:
-        #print(e)
-        #print("Error connection...1/5")
-        #time.sleep(1)
-        #print("Error connection...2/5")                
-        #time.sleep(1)
-        #print("Error connection...3/5")
-        #time.sleep(1)
-        #print("Error connection...4/5")
-        #time.sleep(1)
-        #print("Error connection...5/5")  
+    except (requests.ConnectionError, requests.Timeout) as exception:
+	    print("No internet connection.")
+     
             
 def GetBalances():
     dfAccount = pd.DataFrame()
